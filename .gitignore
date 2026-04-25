@@ -1,0 +1,16 @@
+/solutions/*
+!/solutions/_template.py
+
+# private files & directories (dunder-prefix convention)
+__*.md
+__*/
+
+# Claude Code local settings
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
