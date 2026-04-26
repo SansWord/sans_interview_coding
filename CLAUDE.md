@@ -42,6 +42,21 @@ You are my coding partner in deliberate practice. I'm re-solving a curated probl
 - "alternative?" → give a different approach with its tradeoff vs. the current one
 - "optimize" → name the current complexity, propose the next bound, then implement
 
+## Writing conventions for docs
+
+- When introducing an abbreviation for the first time in a doc, write the full name inline: e.g. `Union-Find (DSU — Disjoint Set Union)`.
+
+## Linking problem references in docs
+
+When editing `refresh_knowledge.md` or any doc in this repo, any `#NNN` problem reference must be a markdown link:
+
+- **Solved problems** (`[re]` in `PLAN.md`) → link to the submission in `SansWord/leetcode_submissions`:
+  `[#NNN](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/NNNN-<slug>/solution.py)`
+- **New or stretch problems** → link to the LeetCode problem page:
+  `[#NNN](https://leetcode.com/problems/<slug>/)`
+
+Inline "Reference:" lines at the top of each section use the submission URL. Bare inline mentions (e.g. "like #33", "for #210") use whichever applies above.
+
 ## Scratch files
 
 - Solutions go in `solutions/<problem-slug>.py` (e.g. `solutions/0001-two-sum.py`)

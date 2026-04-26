@@ -34,9 +34,9 @@ return lo                  # lo == hi == leftmost true, or len(nums) if none
 
 **Rightmost match:** search for leftmost of `not pred` and return `lo - 1`, or mirror the template.
 
-**Rotated array (like #33):** at each step, one half `[lo, mid]` or `[mid, hi)` is sorted. Check which, then check if the target lies within that sorted half. If yes, recurse into it; else the other half. My #33 solution does this cleanly.
+**Rotated array (like [#33](https://leetcode.com/problems/search-in-rotated-sorted-array/)):** at each step, one half `[lo, mid]` or `[mid, hi)` is sorted. Check which, then check if the target lies within that sorted half. If yes, recurse into it; else the other half. My [#33](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0033-search-in-rotated-sorted-array/solution.py) solution does this cleanly.
 
-**First/last of target (like #34):** two separate binary searches with different predicates (`val >= target` for first, `val > target` for first-past-last). Cleaner than tracking match during the search.
+**First/last of target (like [#34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)):** two separate binary searches with different predicates (`val >= target` for first, `val > target` for first-past-last). Cleaner than tracking match during the search.
 
 ---
 
@@ -94,7 +94,7 @@ for r in range(len(s)):
 
 ## 4. Hashmap — grouping / counting
 
-**Group by canonical key (e.g. #49 Group Anagrams):**
+**Group by canonical key (e.g. [#49 Group Anagrams](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0049-group-anagrams/solution.py)):**
 ```python
 groups = defaultdict(list)
 for s in strs:
@@ -103,9 +103,9 @@ for s in strs:
 return list(groups.values())
 ```
 
-**Frequency → heap (my #347):** `defaultdict(int)` count, then push `(-freq, val)` into heap for top-K. Negation trick for max-heap. Clean.
+**Frequency → heap ([my #347](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0347-top-k-frequent-elements/solution.py)):** `defaultdict(int)` count, then push `(-freq, val)` into heap for top-K. Negation trick for max-heap. Clean.
 
-**Complement lookup (#1 Two Sum):**
+**Complement lookup ([#1 Two Sum](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0001-two-sum/solution.py)):**
 ```python
 seen = {}   # val -> index
 for i, x in enumerate(nums):
@@ -117,6 +117,8 @@ for i, x in enumerate(nums):
 ---
 
 ## 5. Stack — valid parentheses / pair matching
+
+Reference: [`0020-valid-parentheses/solution.py`](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0020-valid-parentheses/solution.py).
 
 **Template:**
 ```python
@@ -155,11 +157,11 @@ return res
 
 ---
 
-## 7. BFS — grid & tree
+## 7. BFS (Breadth-First Search) — grid & tree
 
-I don't have a clean queue-BFS reference in my submissions (I used DFS for #200). Learn this for #102 Level Order Traversal.
+I don't have a clean queue-BFS reference in my submissions (I used DFS for [#200](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0200-number-of-islands/solution.py)). Learn this for [#102](https://leetcode.com/problems/binary-tree-level-order-traversal/) Level Order Traversal.
 
-**Tree level order (for #102):**
+**Tree level order (for [#102 Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)):**
 ```python
 if not root: return []
 q = deque([root])
@@ -177,7 +179,13 @@ return res
 
 **The snapshot (`for _ in range(len(q))`) is the key.** It separates levels. Without it, you're doing flat BFS.
 
-**Grid BFS (multi-source, e.g. rotting oranges / shortest path):**
+**Flat vs level-order:** same O(V+E) either way. The real skill is picking the right one:
+- Need depth, distance, or grouping by generation → level-order
+- Just need reachability or "visit everything" (flood fill, connected components) → flat BFS is simpler, less to implement and explain
+
+**On grids:** the same distinction applies. The template below carries `d` (distance) in the tuple — that's level-order. Drop `d` for flat. Rotting Oranges needs `d`: the answer is the max distance reached across all rotten cells, which is the number of minutes elapsed.
+
+**Grid BFS (multi-source, e.g. [#994 Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) / shortest path):**
 ```python
 q = deque([(r, c, 0)])       # (row, col, dist)
 seen = {(r, c)}
@@ -192,7 +200,7 @@ while q:
 
 ---
 
-## 8. DFS — grid
+## 8. DFS (Depth-First Search) — grid
 
 Reference: [`0200-number-of-islands/solution.py`](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0200-number-of-islands/solution.py). My style: recursive DFS with `visited[y][x]` and early return on invalid/visited/water.
 
@@ -211,7 +219,114 @@ Reference: [`0207-course-schedule/solution.py`](https://github.com/SansWord/leet
 
 A back-edge to a gray node = cycle.
 
-**Alternative: Kahn's algorithm (BFS with indegrees).** Push nodes with indegree 0, pop, decrement neighbors' indegrees. If all nodes processed → no cycle. Sometimes cleaner. Have both in the toolkit for #210.
+**Alternative: [Kahn's algorithm](https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm) (BFS with indegrees).** Push nodes with indegree 0, pop, decrement neighbors' indegrees. If all nodes processed → no cycle. Sometimes cleaner. Have both in the toolkit for [#210](https://leetcode.com/problems/course-schedule-ii/).
+
+```python
+# Time: O(V+E) — each node and edge visited once
+# Space: O(V+E) — adjacency list + indegree array + queue
+def canFinish(numCourses, prerequisites):
+    edges = defaultdict(list)
+    indegree = [0] * numCourses
+    for c, req in prerequisites:
+        edges[req].append(c)
+        indegree[c] += 1
+
+    queue = deque(i for i in range(numCourses) if indegree[i] == 0)
+    processed = 0
+    while queue:
+        node = queue.popleft()
+        processed += 1
+        for neighbor in edges[node]:
+            indegree[neighbor] -= 1
+            if indegree[neighbor] == 0:
+                queue.append(neighbor)
+
+    return processed == numCourses  # False → cycle exists
+```
+
+To also return topological order, collect `node` into a list on each pop — the list is a valid ordering.
+
+**Kahn's vs DFS — when to pick which:**
+- Default to Kahn's for cycle detection: iterative (no recursion limit), cleaner code, gives topological order for free.
+- Pick DFS when the problem is inherently path-based: reachability, connected components, cycle *path* reconstruction.
+
+**Returning the actual cycle (path reconstruction):**
+
+`visiting` already IS the current path. When `next_course in visiting`, slice from where `next_course` first appears:
+
+```python
+# Time: O(V+E) — each node/edge visited once; visiting.index() is O(V) but amortized fine
+# Space: O(V+E) — adjacency list + visited array + recursion stack (depth ≤ V)
+# change return type: None = no cycle, list = cycle found
+def walk(self, course, visiting):
+    visiting.append(course)
+    for next_course in self.edges[course]:
+        if next_course in visiting:
+            start = visiting.index(next_course)
+            return visiting[start:]          # the cycle
+        if not self.visited[next_course]:
+            result = self.walk(next_course, visiting)
+            if result is not None:
+                return result                # propagate unchanged
+    visiting.pop()
+    self.visited[course] = True
+    return None
+```
+
+Once the cycle is captured at the detection point, every caller just passes it up — no one adds to it.
+
+**Filtering by cycle length (e.g. "only cycles with 3+ nodes"):**
+
+Both algorithms detect cycles of any length — 1 (self-loop), 2 (A→B→A), or longer. To filter:
+
+- **DFS** — easy. The length is `len(visiting[start:])`. Add one check:
+  ```python
+  if next_course in visiting:
+      start = visiting.index(next_course)
+      cycle = visiting[start:]
+      if len(cycle) >= 3:      # ignore self-loops and 2-cycles
+          return cycle
+  ```
+- **Kahn's** — can't filter. It destroys path information as it runs. All you get is "cycle exists" — you can't know the length without additional work.
+
+Rule of thumb: any time the problem asks you to *characterize* the cycle (length, members, minimum size), Kahn's hits a wall. Use DFS.
+
+**Stretch: finding all unique cycles**
+
+This is significantly harder. The DFS above finds the first cycle and exits. Three problems when extending it:
+1. A single DFS doesn't find all cycles — need to restart from every node.
+2. The same cycle gets discovered multiple times ([0,1,2], [1,2,0], [2,0,1] are the same).
+3. Stopping early on `visited` nodes would skip cycles reachable through them.
+
+**The canonical dedup trick:** only report a cycle when the starting node is the *minimum* node in the cycle. This ensures each cycle is found exactly once, from its lowest-numbered node. Skip any neighbor with index ≤ start.
+
+```python
+def find_all_cycles(numCourses, prerequisites):
+    edges = defaultdict(list)
+    for c, req in prerequisites:
+        edges[req].append(c)
+    all_cycles = []
+
+    def dfs(start, current, path, in_path):
+        for neighbor in edges[current]:
+            if neighbor == start and len(path) > 1:
+                all_cycles.append(list(path))   # found cycle back to start
+            elif neighbor > start and neighbor not in in_path:
+                # only visit nodes > start: each cycle reported once (from min node)
+                in_path.add(neighbor)
+                path.append(neighbor)
+                dfs(start, neighbor, path, in_path)
+                path.pop()
+                in_path.remove(neighbor)
+
+    for start in range(numCourses):
+        dfs(start, start, [start], {start})
+    return all_cycles
+```
+
+The `neighbor > start` constraint is the dedup mechanism. A cycle [0,1,2] is only discoverable starting from 0; from 1 or 2, neighbor 0 gets skipped.
+
+The production algorithm for all elementary cycles is **[Johnson's algorithm](https://www.cs.tufts.edu/comp/150GA/homeworks/hw1/Johnson%2075.pdf)** (1975) — O((V+E)(C+1)) where C = number of cycles. It uses a more sophisticated blocked-node mechanism to avoid redundant searches. Unlikely in an interview, but good to name if the interviewer pushes.
 
 ---
 
@@ -253,11 +368,11 @@ return h   # k largest, unordered
 
 **Top-K frequent:** same pattern, push `(freq, val)` tuples.
 
-**K-way merge (for #23):** push head of each list into heap; pop smallest, push its `.next`.
+**K-way merge (for [#23](https://leetcode.com/problems/merge-k-sorted-lists/)):** push head of each list into heap; pop smallest, push its `.next`.
 
 ---
 
-## 12. DP — 1D (for #322 Coin Change)
+## 12. DP — 1D (for [#322 Coin Change](https://leetcode.com/problems/coin-change/))
 
 DP is the least-represented pattern in my recent submissions — worth extra attention.
 
@@ -290,16 +405,16 @@ def coinChange(coins, amount):
 2. Transition: `dp[i] = min over c of (dp[i-c] + 1)`
 3. Unreachable sentinel: `amount + 1` works because you can never need more coins than `amount` (since smallest coin is ≥ 1).
 
-**House Robber (stretch #198)** is the easier 1D DP warm-up: `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`.
+**[House Robber](https://leetcode.com/problems/house-robber/) (stretch #198)** is the easier 1D DP warm-up: `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`.
 
 ---
 
-## 13. Design — LRU Cache (for #146)
+## 13. Design — LRU (Least Recently Used) Cache (for [#146 LRU Cache](https://leetcode.com/problems/lru-cache/))
 
 Never built this. The interview-canonical structure:
 
 **Doubly-linked list + hashmap:**
-- DLL ordered by recency. Head = most recent, tail = least recent.
+- DLL (Doubly-Linked List) ordered by recency. Head = most recent, tail = least recent.
 - Hashmap `key -> node` for O(1) access.
 - `get(key)`: hashmap lookup → unlink node → push to head → return val
 - `put(key, val)`: if present, unlink; insert at head; if over capacity, remove tail, drop from hashmap.
@@ -380,7 +495,7 @@ return prev
 
 ### 15b. Backtracking — subsets / permutations / combinations
 
-#212 Word Search II uses this, but no simpler standalone rep. Learn the skeleton first on clean problems.
+[#212 Word Search II](https://leetcode.com/problems/word-search-ii/) uses this, but no simpler standalone rep. Learn the skeleton first on clean problems.
 
 **Recognize:** "generate all", "find all paths", "partition", constraint satisfaction.
 
@@ -442,12 +557,14 @@ for x in nums:
 
 ---
 
-### 15e. Union-Find (DSU)
+### 15e. Union-Find (DSU — Disjoint Set Union)
 
 **Recognize:** "count connected components", "are X and Y connected", "redundant edge", problems where merging equivalence classes is the shape.
 
 **Template (path compression + union by size, ~10 lines):**
 ```python
+# Time: O(α(V)) per operation (practically O(1)); O(V+E) overall
+# Space: O(V)
 parent = list(range(n))
 size = [1] * n
 
@@ -459,27 +576,92 @@ def find(x):
 
 def union(a, b):
     ra, rb = find(a), find(b)
-    if ra == rb: return False
+    if ra == rb: return False           # already same component
     if size[ra] < size[rb]: ra, rb = rb, ra
     parent[rb] = ra
     size[ra] += size[rb]
     return True
 ```
 
+**Cycle detection in undirected graphs — DSU is the natural fit.**
+
+In an undirected graph you can't use Kahn's (designed for directed) or the three-color DFS (gray/black states don't map cleanly because every edge is bidirectional). DSU sidesteps both problems entirely:
+
+> If you try to union two nodes that are already in the same component, the new edge creates a cycle.
+
+```python
+def has_cycle(n, edges):
+    parent = list(range(n))
+    size = [1] * n
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for a, b in edges:
+        if not union(a, b):   # same root → cycle
+            return True
+    return False
+```
+
+Intuition: DSU tracks equivalence classes ("which nodes are already connected?"). The moment an edge connects two nodes that already share a root, you've closed a loop — that's a cycle.
+
+**Why not DFS for undirected cycles?**
+
+DFS can work on undirected graphs, but you need to track the parent to avoid treating the edge you just came from as a back-edge:
+
+```python
+def has_cycle_dfs(n, edges):
+    adj = defaultdict(list)
+    for a, b in edges:
+        adj[a].append(b)
+        adj[b].append(a)
+    visited = set()
+
+    def dfs(node, parent):
+        visited.add(node)
+        for neighbor in adj[node]:
+            if neighbor == parent:
+                continue              # ignore the edge we came from
+            if neighbor in visited:
+                return True           # back-edge → cycle
+            if dfs(neighbor, node):
+                return True
+        return False
+
+    for i in range(n):
+        if i not in visited:
+            if dfs(i, -1):
+                return True
+    return False
+```
+
+This works but is more fiddly than DSU. Prefer DSU when the question is purely "does a cycle exist?" in an undirected graph.
+
+**Directed vs undirected — which tool:**
+
+| Graph type | Cycle detection tool |
+|---|---|
+| Directed | Kahn's (yes/no) or DFS (path) |
+| Undirected | DSU (yes/no) or DFS with parent-skip |
+
 **When to pick DSU over DFS/BFS:** when components change over time (edges added incrementally), or when you need component representatives for many pairs. Static connectivity → DFS/BFS is usually simpler.
 
 **Practice:**
 - [#547 Number of Provinces](https://leetcode.com/problems/number-of-provinces/) — count components
-- [#684 Redundant Connection](https://leetcode.com/problems/redundant-connection/) — first edge that closes a cycle
+- [#684 Redundant Connection](https://leetcode.com/problems/redundant-connection/) — first edge that closes a cycle (undirected, DSU is the clean solution)
 - [#200 Number of Islands](https://leetcode.com/problems/number-of-islands/) — re-do it with Union-Find (I already solved it via DFS; the DSU version is a great contrast rep)
+- [#261 Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/) — undirected cycle + connectivity check in one pass
 
 ---
 
 ### 15f. 2D DP (grids / pairs of strings)
 
-1D DP is in the core via #322. 2D is the next step and shows up often.
+1D DP is in the core via [#322](https://leetcode.com/problems/coin-change/). 2D is the next step and shows up often.
 
-**Recognize:** grid path counts, two-string alignment (edit distance, LCS), "best split point".
+**Recognize:** grid path counts, two-string alignment (edit distance, LCS (Longest Common Subsequence)), "best split point".
 
 **Template:**
 ```python
@@ -504,7 +686,7 @@ return dp[m][n]
 
 ### 15g. Trie
 
-I touch Trie via #212 Word Search II (in Day 3 set). Learn the standalone version first — #212 combines Trie + backtracking and is overwhelming without prior Trie reps.
+I touch Trie via [#212 Word Search II](https://leetcode.com/problems/word-search-ii/) (in Day 3 set). Learn the standalone version first — #212 combines Trie + backtracking and is overwhelming without prior Trie reps.
 
 **Template:**
 ```python
@@ -532,7 +714,7 @@ class Trie:
 **Practice:**
 - [#208 Implement Trie](https://leetcode.com/problems/implement-trie-prefix-tree/) — canonical
 - [#1268 Search Suggestions System](https://leetcode.com/problems/search-suggestions-system/) — prefix walk + collect
-- Then #212 Word Search II becomes tractable
+- Then [#212 Word Search II](https://leetcode.com/problems/word-search-ii/) becomes tractable
 
 ---
 

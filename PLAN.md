@@ -53,12 +53,12 @@ Format: `[ ] #<num> <name> — pattern — actual time — notes`
 
 ### Heap / graph / tree
 - [ ] `[re]` [#347 Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) — heap —
-- [ ] `[re]` [#200 Number of Islands](https://leetcode.com/problems/number-of-islands/) — BFS/DFS grid —
+- [ ] `[re]` [#200 Number of Islands](https://leetcode.com/problems/number-of-islands/) — BFS (Breadth-First Search)/DFS (Depth-First Search) grid —
 - [ ] `[re]` [#207 Course Schedule](https://leetcode.com/problems/course-schedule/) — topo sort —
 - [ ] `[new]` [#102 Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/) — BFS queue — **do this**, foundational
 - [ ] `[re]` [#98 Validate BST](https://leetcode.com/problems/validate-binary-search-tree/) —
 
-### DP
+### DP (Dynamic Programming)
 - [ ] `[new]` [#322 Coin Change](https://leetcode.com/problems/coin-change/) — 1D DP — **do this**, one DP rep
 
 ---

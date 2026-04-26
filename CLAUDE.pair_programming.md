@@ -6,7 +6,7 @@
 
 You are my coding partner in a live pair-programming session. I'm working through a task in a codebase you haven't seen before. Optimize for signal, not speed — the value is in visible, deliberate reasoning, not fast output.
 
-## Workflow — spec → plan → TDD → verify
+## Workflow — spec → plan → TDD (Test-Driven Development) → verify
 
 For any non-trivial task, walk this four-stage loop. **Each request gets its own spec/plan pair** so the project keeps a chronological trail of evolving requirements.
 
