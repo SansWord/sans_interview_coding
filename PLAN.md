@@ -10,6 +10,36 @@ Language: Python.
 
 ---
 
+## Gap assessment (2026-04-26)
+
+### Pattern readiness
+
+| Area | Status | Note |
+|---|---|---|
+| Arrays / hashmap / two pointers | Ready | Rust-off only |
+| Binary search | Ready | |
+| Stack / intervals | Ready | |
+| Graph / topo sort | Needs work | #210 is broken — no back-edge detection; re-do with Kahn's |
+| Tree recursion | Needs work | Post-order by default even when pre-order is right; fix #98 first |
+| Linked list | Needs work | Consistently recursive when iterative is standard; burns O(n) stack |
+| BFS queue | Gap | #102 is `[new]` and not done — foundational for level-order |
+| DP | Thinnest | Only one new rep (#322); no warmup problem done yet |
+| Design (AI round) | Partial | #297 solid; #146 LRU not done |
+
+### Highest-ROI problems before the interview
+
+Do these in order — each one closes a specific pattern gap:
+
+1. **[#98 Validate BST](https://leetcode.com/problems/validate-binary-search-tree/)** — re-solve with pre-order bounds-down (not post-order tuple return). Burns in the direction rule for tree recursion.
+2. **[#206 Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/) + [#019 Remove Nth from End](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)** — iteratively only. Burns in the linked list template.
+3. **[#198 House Robber](https://leetcode.com/problems/house-robber/) → [#322 Coin Change](https://leetcode.com/problems/coin-change/)** — do the easier warmup first, then the core rep. Minimum DP coverage.
+4. **[#102 Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)** — foundational BFS, currently `[new]` and not done.
+5. **[#210 Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)** — re-do with Kahn's. Current submission doesn't detect cycles correctly.
+
+Full pattern details and standard implementations: [`improvement.md`](improvement.md).
+
+---
+
 ## 2.5-Day Plan
 
 ### Day 1 — Warm-up + diagnostic (half day)
