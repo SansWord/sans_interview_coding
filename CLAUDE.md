@@ -46,8 +46,9 @@ You are my coding partner in deliberate practice. I'm re-solving a curated probl
   2. Check the header block is fully filled (problem num, name, URL, pattern, date, time taken)
   3. Check test cases cover: happy path, empty, single element, duplicates, one adversarial case — and that none are placeholder asserts
   4. Run the file and confirm it passes
-  5. Give any advice or suggestions on the solution or tests
-  6. If the solution passes all checks with no significant issues, append a one-line entry to the session log in `PLAN.md` under today's date (create the date section if it doesn't exist), then update the file's header field to `Logged: yes`
+  5. Verify the **Time** and **Space** complexity claims in the header match the actual implementation. Flag understated bounds (e.g. ignoring auxiliary data structures), overstated bounds, or missing terms.
+  6. Give any advice or suggestions on the solution or tests
+  7. If the solution passes all checks with no significant issues, append a one-line entry to the session log in `PLAN.md` under today's date (create the date section if it doesn't exist), then update the file's header field to `Logged: yes`
 
 ## Writing conventions for docs
 

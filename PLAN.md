@@ -141,6 +141,12 @@ Append as I go. Each entry: date, problems, how it felt, where I stalled.
 
 ### 2026-04-27
 - #206 Reverse Linked List — 5 min, clean. Set up `solutions/util/test_util.py` with `ll`, `assert_ll` helpers.
+- #19 Remove Nth Node From End of List — 10 min, clean. Fast/slow pointer with dummy head.
+- #98 Validate BST — 5 min, clean. Pre-order bounds-down recursion.
+- #102 Binary Tree Level Order Traversal — 15 min, clean. BFS with `for _ in range(len(q))` level snapshot.
+- #198 House Robber — 15 min, clean. Top-down DP with `@cache`.
+- #322 Coin Change — 30 min, clean. Bottom-up DP with `INF = amount + 1` sentinel.
+- #210 Course Schedule II — 30 min, clean. Kahn's algorithm; added `assert_topo_order` helper.
 
 ### 2026-04-24
 - _not yet_
