@@ -139,6 +139,9 @@ Ordered for after the interview; not required. Grouped by same patterns so each 
 
 Append as I go. Each entry: date, problems, how it felt, where I stalled.
 
+### 2026-04-27
+- #206 Reverse Linked List — 5 min, clean. Set up `solutions/util/test_util.py` with `ll`, `assert_ll` helpers.
+
 ### 2026-04-24
 - _not yet_
 

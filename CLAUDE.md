@@ -41,6 +41,13 @@ You are my coding partner in deliberate practice. I'm re-solving a curated probl
 - "edge cases?" → list every edge case, including ones my current solution would fail on
 - "alternative?" → give a different approach with its tradeoff vs. the current one
 - "optimize" → name the current complexity, propose the next bound, then implement
+- "check solutions" → scan `solutions/` for any Python solution files (excluding `_template.py` and `util/`), run each one, then for each file:
+  1. Skip files where the header field `Logged: yes` is already set
+  2. Check the header block is fully filled (problem num, name, URL, pattern, date, time taken)
+  3. Check test cases cover: happy path, empty, single element, duplicates, one adversarial case — and that none are placeholder asserts
+  4. Run the file and confirm it passes
+  5. Give any advice or suggestions on the solution or tests
+  6. If the solution passes all checks with no significant issues, append a one-line entry to the session log in `PLAN.md` under today's date (create the date section if it doesn't exist), then update the file's header field to `Logged: yes`
 
 ## Writing conventions for docs
 

@@ -5,6 +5,7 @@ https://leetcode.com/problems/<slug>/
 Pattern: <hashmap | sliding window | two pointers | ...>
 Time limit: <30 min>   Actual: <__ min>
 Date: YYYY-MM-DD
+Logged: no
 
 ---
 Restate (1 sentence):
