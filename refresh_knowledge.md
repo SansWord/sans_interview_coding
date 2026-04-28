@@ -34,6 +34,63 @@ return lo                  # lo == hi == leftmost true, or len(nums) if none
 
 **Rightmost match:** search for leftmost of `not pred` and return `lo - 1`, or mirror the template.
 
+**Mental model — predicate-based partition (universal):**
+
+Every binary search splits the search space `[lo, hi)` into two regions, separated by `l` (== `r` at exit):
+
+```
+[lo, l)   →  left region  (predicate fails)
+[r, hi)   →  right region (predicate holds)
+```
+
+The branches assign `mid` to one of the regions:
+- `r = mid` → mid joins the **right** region (predicate is true for mid)
+- `l = mid + 1` → mid joins the **left** region (predicate is false for mid)
+
+When `l == r` at termination, that meeting point is the **first index of the right region** — i.e., the first index where the predicate holds (or `hi` if the right region is empty).
+
+**Why `l == r` at exit (and `l` never overshoots `r`):**
+- `mid = (l + r) // 2` always satisfies `l <= mid < r`
+- `r = mid` strictly decreases r (since `mid < r`)
+- `l = mid + 1` increases l but caps at r (since `mid + 1 <= r`)
+- Each iteration shrinks the gap by ≥1 → eventually `l == r` exactly
+
+**Overflow note (`mid = l + (r - l) // 2`):**
+The "safe" form `l + (r - l) // 2` is **not needed in Python** — Python ints are arbitrary precision, so `(l + r) // 2` never overflows. But it's a famous interview gotcha (Joshua Bloch's 2006 post) for fixed-width integer languages: in Java/C++, `int l + int r` near `2^31` wraps to a negative value, breaking the search. If asked "what if l + r overflows?", explain you'd use `l + (r - l) // 2` in those languages, but Python doesn't have the issue. Worth knowing for language-portability discussions or coding interviews in Java/C++.
+
+**Designing any binary search in 3 steps:**
+1. Define a **monotonic predicate** `P(i)` — false for some prefix, true for the suffix.
+2. Pick the search space `[lo, hi)`.
+3. Apply the universal template:
+   ```python
+   while l < r:
+       mid = (l + r) // 2
+       if P(mid):
+           r = mid
+       else:
+           l = mid + 1
+   ```
+
+At exit, `l` = first index where P holds, or `hi` if none. Always check `l < hi` before reading `nums[l]`.
+
+**Examples of P for different problems:**
+
+| Problem | Predicate `P(i)` |
+|---------|---------------|
+| Lower-bound (first ≥ target) | `nums[i] >= target` |
+| Upper-bound (first > target) | `nums[i] > target` |
+| Find target exactly | `nums[i] >= target`, then verify `nums[l] == target` |
+| Last occurrence of target ([#34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)) | upper-bound, return `l - 1` |
+| Min in rotated ([#153](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)) | `nums[i] <= nums[-1]` |
+| Koko bananas ([#875](https://leetcode.com/problems/koko-eating-bananas/)) | `can_finish(speed=i, h)` (binary search on answer) |
+| Split array max sum | `can_split(max_sum=i, k)` |
+
+**When the universal template doesn't apply:**
+- **Rotated arrays ([#33](https://leetcode.com/problems/search-in-rotated-sorted-array/))** — predicate isn't monotonic globally; needs the sorted-half hack
+- **Need both index and content of the boundary** — handle bounds check separately after the search
+
+For ~90% of binary search problems, this single template + a well-chosen predicate is the entire solution. Stop reasoning about `<` vs `<=` or `mid` vs `mid+1` — those are encoded in the template once.
+
 **Rotated array (like [#33](https://leetcode.com/problems/search-in-rotated-sorted-array/)):** at each step, one half `[lo, mid]` or `[mid, hi)` is sorted. Check which, then check if the target lies within that sorted half. If yes, recurse into it; else the other half. My [#33](https://github.com/SansWord/leetcode_submissions/blob/main/submissions/0033-search-in-rotated-sorted-array/solution.py) solution does this cleanly.
 
 **First/last of target (like [#34](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)):** two separate binary searches with different predicates (`val >= target` for first, `val > target` for first-past-last). Cleaner than tracking match during the search.

@@ -47,8 +47,17 @@ You are my coding partner in deliberate practice. I'm re-solving a curated probl
   3. Check test cases cover: happy path, empty, single element, duplicates, one adversarial case — and that none are placeholder asserts
   4. Run the file and confirm it passes
   5. Verify the **Time** and **Space** complexity claims in the header match the actual implementation. Flag understated bounds (e.g. ignoring auxiliary data structures), overstated bounds, or missing terms.
-  6. Give any advice or suggestions on the solution or tests
-  7. If the solution passes all checks with no significant issues, append a one-line entry to the session log in `PLAN.md` under today's date (create the date section if it doesn't exist), then update the file's header field to `Logged: yes`
+  6. Give advice or suggestions on the solution or tests. Specifically call out:
+     - **Anti-patterns**: micro-optimizations that hurt readability (e.g. skipping a hash op via manual index manipulation), unnecessary branching when a unified path works, premature optimization, dead code, misleading variable names
+     - **Idiomatic alternatives**: when a Pythonic / standard-library approach would be cleaner (e.g. `defaultdict` over manual init, comprehensions over loop+append)
+     - **Invariant clarity**: if the invariant is muddled or hard to read, suggest a refactor that makes it obvious
+     - **Cost vs benefit**: when an optimization is real but not worth the readability cost — quantify (e.g. "saves 1 hash op per duplicate, costs a branch + manual l++")
+     - **Comment accuracy**: if a comment claims a complexity or rationale that's wrong (e.g. "log(N)" for hash ops that are actually O(1))
+     Prioritize feedback that makes the code more interview-ready: clear invariants, no surprises, easy to defend out loud.
+  7. If the solution passes all checks with no significant issues:
+     a. Append a one-line entry to the session log in `PLAN.md` under today's date (create the date section if it doesn't exist)
+     b. If the problem appears as a checkbox `- [ ]` anywhere in `PLAN.md`, mark it `- [x]` and append the actual time taken (e.g. `— 15 min`)
+     c. Update the file's header field to `Logged: yes`
 
 ## Writing conventions for docs
 
