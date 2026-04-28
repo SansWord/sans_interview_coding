@@ -51,10 +51,21 @@ Full pattern details and standard implementations: [`improvement.md`](improvemen
 - [ ] 6 Mediums across the core list
 - [ ] Redo any peeked/struggled ones from scratch, same day
 
-### Day 3 — AI round rehearsal (full day)
-- [ ] Morning: rehearse the AI-round setup flow end-to-end on a throwaway problem (template-dir copy, plugin-disable verification, opening line)
-- [ ] Mid-day: 2 mock follow-up problems, narrate out loud
-- [ ] Evening: 2 more Mediums on weak patterns from Day 2
+### Day 3 — AI round rehearsal (compressed: interview is 2026-04-29 11:30am)
+
+Updated 2026-04-28: original full-day plan compressed because solo-round practice is essentially complete (18 problems solved across 9 patterns). Tomorrow is a 1-hour AI round, not a solo round, so further algorithm drilling has diminishing returns. Focus today on workflow fluency.
+
+**Today (2026-04-28) — finish by noon:**
+- [ ] Setup verification (~15 min): terminal with `claude`, editor in split view, template dir ready, re-read [`CLAUDE.pair_programming.md`](CLAUDE.pair_programming.md)
+- [ ] One full mock AI round (~60 min): pick a tiny project with extensible features, run spec → plan → TDD → verify, narrate decisions out loud, push back at least once, type one edge case yourself
+- [ ] Light review (~30 min): re-read `CLAUDE.pair_programming.md` and skim `refresh_knowledge.md` weak spots — no new code
+
+**Today afternoon + evening:** rest. No coding. No new problems.
+
+**Tomorrow morning before 11:30am:**
+- [ ] Re-read `CLAUDE.pair_programming.md` once
+- [ ] No coding
+- [ ] Eat, hydrate, breathe
 
 ---
 
@@ -75,7 +86,7 @@ Format: `[ ] #<num> <name> — pattern — actual time — notes`
 
 ### Binary search
 - [x] `[re]` [#33 Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) —
-- [ ] `[re]` [#34 Find First and Last Position](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) —
+- [x] `[re]` [#34 Find First and Last Position](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) — 30 min
 
 ### Stack / intervals
 - [x] `[re]` [#20 Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) — warm-up — 5 min
@@ -157,6 +168,9 @@ Append as I go. Each entry: date, problems, how it felt, where I stalled.
 - #238 Product of Array Except Self — prefix into output, then streaming right-product scalar. O(1) extra space.
 - #56 Merge Intervals — sort + scan; seed with first interval, extend or append per pair.
 - #33 Search in Rotated Sorted Array — modified binary search; identify sorted half by `lVal < val`, range-check target. Initially had two bugs (missing upper bound, loop exit before final check) — discovered via gap test cases.
+
+### 2026-04-28
+- #34 Find First and Last Position — two-pass binary search (lower-bound + upper-bound, second pass starts from first_idx). Discussed predicate-based partition mental model and added universal binary search template to refresh_knowledge.md.
 
 ### 2026-04-24
 - _not yet_
